@@ -1,0 +1,8 @@
+:root {
+  --portal-bg: #f7f3ec;
+  --portal-panel: rgba(255, 255, 255, 0.82);
+  --portal-border: rgba(28, 25, 22, 0.1);
+  --portal-text: #1d1a17;
+  --portal-muted: rgba(29, 26, 23, 0.68);
+  --portal-accent: #b59773;
+}
