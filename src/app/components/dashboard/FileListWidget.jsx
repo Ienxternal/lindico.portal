@@ -1,10 +1,10 @@
 export function FileListWidget() {
   return (
     <article className="portal-card">
-      <div className="portal-card-header">
+      <div className="portal-card-head">
         <div>
-          <p className="portal-card-kicker">Client essentials</p>
-          <h2>What you likely need next</h2>
+          <p className="portal-card-kicker">Client Essentials</p>
+          <h2 className="portal-card-title">What you likely need next</h2>
         </div>
       </div>
 
@@ -19,10 +19,17 @@ export function FileListWidget() {
         </div>
         <div id="documents">
           <h3>Latest documents</h3>
-          <ul>
-            <li>Lighting submittal package</li>
-            <li>Updated project schedule PDF</li>
-            <li>Cabinet hardware sample sheet</li>
+          <ul className="portal-doc-list">
+            {[
+              { name: 'Lighting submittal package', type: 'PDF' },
+              { name: 'Updated project schedule', type: 'PDF' },
+              { name: 'Cabinet hardware sample sheet', type: 'XLSX' },
+            ].map(({ name, type }) => (
+              <li key={name} className="portal-doc-item">
+                <span className={`portal-doc-badge portal-doc-badge--${type.toLowerCase()}`}>{type}</span>
+                {name}
+              </li>
+            ))}
           </ul>
         </div>
         <div id="contacts">

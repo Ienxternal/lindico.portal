@@ -2,3 +2,7 @@
 @import './tailwind.css';
 @import './theme.css';
 @import './portal.css';
+@import './portal-sidebar.css';
+@import './portal-header.css';
+@import './portal-dashboard.css';
+@import './portal-calendar.css';

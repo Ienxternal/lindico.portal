@@ -1,21 +1,27 @@
-import { SignUp } from '@clerk/clerk-react';
+import { useAuth0 } from '@auth0/auth0-react';
+import { useEffect } from 'react';
 
 export function SignUpPage() {
+  const { loginWithRedirect, isAuthenticated, isLoading } = useAuth0();
+
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
+      void loginWithRedirect({
+        appState: { returnTo: '/portal' },
+        authorizationParams: {
+          screen_hint: 'signup',
+        },
+      });
+    }
+  }, [isAuthenticated, isLoading, loginWithRedirect]);
+
   return (
     <section className="portal-panel">
       <p className="portal-kicker">Sign Up</p>
       <h1>Create your LindiCo portal access.</h1>
       <p className="portal-copy">
-        Complete your account setup to review project details, files, and next steps.
+        Redirecting you to complete your account setup securely.
       </p>
-      <div className="portal-auth-card">
-        <SignUp
-          path="/sign-up"
-          routing="path"
-          signInUrl="/sign-in"
-          forceRedirectUrl="/portal"
-        />
-      </div>
     </section>
   );
 }

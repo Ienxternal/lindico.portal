@@ -12,6 +12,7 @@ import { AdminRoute } from '../components/auth/AdminRoute';
 import { SignInPage } from '../routes/auth/SignInPage';
 import { SignUpPage } from '../routes/auth/SignUpPage';
 import { AcceptInvitePage } from '../routes/auth/AcceptInvitePage';
+import { AuthCallbackPage } from '../routes/auth/AuthCallbackPage';
 import { PortalDashboard } from '../routes/client/PortalDashboard';
 import { PortalProject } from '../routes/client/PortalProject';
 import { AdminDashboard } from '../routes/admin/AdminDashboard';
@@ -25,7 +26,8 @@ export function AppRouter() {
         <Route element={<AuthLayout />}>
           <Route path="/sign-in/*" element={<SignInPage />} />
           <Route path="/sign-up/*" element={<SignUpPage />} />
-          <Route path="/accept-invite/:token/*" element={<AcceptInvitePage />} />
+          <Route path="/accept-invite" element={<AcceptInvitePage />} />
+          <Route path="/auth/callback" element={<AuthCallbackPage />} />
         </Route>
 
         <Route

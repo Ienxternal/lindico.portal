@@ -4,9 +4,10 @@ export function canAccessAdmin(role) {
 
 export function isAdminUser(user) {
   const role =
-    user?.publicMetadata?.role ||
-    user?.unsafeMetadata?.role ||
-    user?.organizationMemberships?.[0]?.role;
+    user?.['https://lindico.app/role'] ||
+    user?.role ||
+    user?.roles?.[0] ||
+    user?.['https://lindico.app/roles']?.[0];
 
-  return canAccessAdmin(role);
+  return canAccessAdmin(role || '');
 }

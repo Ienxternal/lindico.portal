@@ -1,3 +1,3 @@
 # Auth
 
-Place Clerk sign-in, sign-up, session, and route protection code here.
+Place Auth0 sign-in, invitation, session, and route protection code here.

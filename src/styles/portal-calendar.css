@@ -1,0 +1,1001 @@
+.portal-calendar-section {
+  display: grid;
+}
+.portal-calendar-empty {
+  margin: 2px 0 0;
+  color: #9e917d;
+  font-size: 0.74rem;
+  line-height: 1.45;
+}
+.portal-calendar-card {
+  min-height: 100%;
+  background:
+    linear-gradient(180deg, rgba(252, 248, 242, 0.99), rgba(249, 244, 236, 0.99));
+}
+
+.portal-calendar-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.portal-calendar-nav {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border: 1px solid #ddd6c8;
+  border-radius: 2px;
+  background: transparent;
+  color: #9a9690;
+  cursor: pointer;
+}
+
+.portal-calendar-upcoming {
+  display: grid;
+  gap: 8px;
+  padding: 12px 20px;
+  border-bottom: 1px solid #ede6d8;
+  background:
+    linear-gradient(180deg, rgba(249, 244, 237, 0.96), rgba(244, 237, 227, 0.92));
+}
+
+.portal-calendar-upcoming-label {
+  color: #b09770;
+  font-size: 0.58rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+}
+
+.portal-calendar-upcoming-columns {
+  display: grid;
+  flex: 1;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  max-height: 164px;
+  overflow-y: auto;
+  padding: 0 6px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(176, 151, 112, 0.58) rgba(239, 232, 220, 0.72);
+  transition: max-height 280ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.portal-calendar-upcoming-columns.is-expanded {
+  max-height: 420px;
+}
+
+.portal-calendar-upcoming-columns::-webkit-scrollbar {
+  width: 10px;
+}
+
+.portal-calendar-upcoming-columns::-webkit-scrollbar-track {
+  border-radius: 999px;
+  background: rgba(239, 232, 220, 0.72);
+}
+
+.portal-calendar-upcoming-columns::-webkit-scrollbar-thumb {
+  border: 2px solid rgba(239, 232, 220, 0.72);
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(194, 167, 126, 0.95), rgba(176, 151, 112, 0.8));
+}
+
+.portal-calendar-upcoming-columns::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, rgba(186, 157, 112, 0.98), rgba(164, 138, 98, 0.88));
+}
+
+.portal-calendar-upcoming-list {
+  display: grid;
+  grid-auto-rows: min-content;
+  align-content: start;
+  gap: 0;
+}
+
+.portal-calendar-upcoming-list + .portal-calendar-upcoming-list {
+  border-left: 1px solid #e3d9c8;
+  padding-left: 20px;
+  margin-left: 20px;
+}
+
+.portal-calendar-upcoming-item {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 0;
+  border-bottom: 1px solid #ede6d8;
+  padding: 0 8px;
+  transition: background 180ms ease, box-shadow 180ms ease;
+}
+
+.portal-calendar-upcoming-item.is-selected::before {
+  content: "";
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  left: 0;
+  width: 3px;
+  border-radius: 999px;
+  background: #b09770;
+  box-shadow: 0 0 10px rgba(176, 151, 112, 0.25);
+}
+
+.portal-calendar-upcoming-item.is-thread-open {
+  background: linear-gradient(180deg, rgba(247, 241, 232, 0.92), rgba(244, 237, 227, 0.88));
+  box-shadow: inset 0 1px 0 rgba(255, 252, 247, 0.6);
+}
+
+.portal-calendar-upcoming-item.is-today {
+  background: linear-gradient(180deg, rgba(242, 251, 244, 0.96), rgba(231, 244, 234, 0.92));
+  box-shadow:
+    inset 0 0 0 1px rgba(143, 186, 151, 0.2),
+    inset 0 1px 0 rgba(255, 252, 247, 0.5);
+}
+
+.portal-calendar-upcoming-item.is-today .portal-calendar-upcoming-select:hover {
+  background: rgba(126, 170, 135, 0.08);
+}
+
+.portal-calendar-upcoming-select {
+  display: grid;
+  grid-template-columns: auto 48px minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 10px;
+  min-height: 40px;
+  width: calc(100% + 16px);
+  margin: 0 -8px;
+  padding: 0 8px;
+  border-left: 0;
+  border-right: 0;
+  border-top: 0;
+  border-bottom: 0;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  transition: background 160ms ease, transform 160ms ease;
+}
+
+.portal-calendar-upcoming-list .portal-calendar-upcoming-item:last-child {
+  border-bottom: none;
+}
+
+.portal-calendar-upcoming-select:hover {
+  background: rgba(176, 151, 112, 0.06);
+}
+
+.portal-calendar-upcoming-item.is-selected {
+  background: rgba(176, 151, 112, 0.1);
+  box-shadow:
+    inset 0 0 0 1px rgba(176, 151, 112, 0.2),
+    0 8px 18px rgba(176, 151, 112, 0.08);
+}
+
+.portal-calendar-upcoming-item.is-today.is-selected {
+  background: linear-gradient(180deg, rgba(242, 251, 244, 0.98), rgba(231, 244, 234, 0.96));
+  box-shadow:
+    inset 0 0 0 1px rgba(143, 186, 151, 0.28),
+    inset 0 1px 0 rgba(255, 252, 247, 0.56),
+    0 10px 20px rgba(126, 170, 135, 0.1);
+}
+
+.portal-calendar-upcoming-item.is-selected .portal-calendar-upcoming-select {
+  transform: translateX(2px);
+}
+
+.portal-calendar-upcoming-item.is-selected .portal-calendar-upcoming-name {
+  color: #171411;
+  font-weight: 600;
+}
+
+.portal-calendar-upcoming-item.is-selected .portal-calendar-upcoming-date {
+  color: #9d7f40;
+}
+
+.portal-calendar-event-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+}
+
+.portal-calendar-event-dot.is-complete {
+  background: #9bb6a0;
+}
+
+.portal-calendar-event-dot.is-active {
+  background: #b77755;
+  box-shadow: 0 0 0 3px rgba(183, 119, 85, 0.16);
+}
+
+.portal-calendar-event-dot.is-upcoming {
+  background: #b8965a;
+}
+
+.portal-calendar-event-dot.is-planned {
+  border: 1.5px solid #a3b2c3;
+  background: transparent;
+}
+
+.portal-calendar-event-dot.is-final {
+  border: 1.5px dashed #7e9c84;
+  background: transparent;
+}
+
+.portal-calendar-upcoming-date {
+  color: #b09770;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.portal-calendar-upcoming-name {
+  min-width: 0;
+  font-size: 0.72rem;
+  color: #1c1c14;
+  font-weight: 500;
+}
+
+.portal-calendar-upcoming-name-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.portal-calendar-comment-anchor {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.portal-calendar-comment-anchor.is-hovered {
+  z-index: 4;
+}
+
+.portal-calendar-comment-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-width: 24px;
+  height: 21px;
+  padding: 0 6px;
+  border: 1px solid rgba(150, 119, 72, 0.28);
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(205, 179, 136, 0.22), rgba(185, 146, 90, 0.16));
+  color: #9c7340;
+  cursor: pointer;
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    color 160ms ease,
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.portal-calendar-comment-trigger.is-unread {
+  position: relative;
+  border-color: rgba(107, 146, 116, 0.44);
+  background: linear-gradient(180deg, rgba(170, 210, 178, 0.34), rgba(127, 168, 136, 0.22));
+  color: #4d7a57;
+  box-shadow:
+    0 0 0 1px rgba(107, 146, 116, 0.08),
+    0 0 0 6px rgba(127, 168, 136, 0.08);
+  animation: portal-comment-unread-pulse 2.6s ease-in-out infinite;
+}
+
+.portal-calendar-comment-trigger.is-unread::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 5px;
+  height: 5px;
+  border: 1.5px solid #f8f3eb;
+  border-radius: 999px;
+  background: #6e9a75;
+}
+
+.portal-calendar-comment-trigger:hover,
+.portal-calendar-comment-trigger:focus-visible,
+.portal-calendar-upcoming-item.is-thread-open .portal-calendar-comment-trigger {
+  border-color: rgba(155, 118, 62, 0.4);
+  background: linear-gradient(180deg, rgba(207, 172, 111, 0.34), rgba(187, 143, 76, 0.24));
+  color: #7f5930;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(176, 151, 112, 0.16);
+}
+
+.portal-calendar-comment-trigger.is-unread:hover,
+.portal-calendar-comment-trigger.is-unread:focus-visible,
+.portal-calendar-upcoming-item.is-thread-open .portal-calendar-comment-trigger.is-unread {
+  border-color: rgba(91, 130, 101, 0.48);
+  background: linear-gradient(180deg, rgba(170, 210, 178, 0.42), rgba(127, 168, 136, 0.3));
+  color: #3f6848;
+  box-shadow:
+    0 0 0 1px rgba(107, 146, 116, 0.12),
+    0 8px 18px rgba(111, 145, 119, 0.18);
+}
+
+.portal-calendar-comment-trigger:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(176, 151, 112, 0.14);
+}
+
+.portal-calendar-comment-count {
+  font-size: 0.52rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.portal-calendar-comment-preview {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 6;
+  width: min(260px, 34vw);
+  padding: 10px 12px;
+  border: 1px solid rgba(221, 212, 190, 0.92);
+  border-radius: 4px;
+  background: rgba(250, 246, 238, 0.98);
+  box-shadow: 0 12px 24px rgba(28, 24, 18, 0.1);
+  opacity: 0;
+  transform: translateY(-4px) scale(0.985);
+  transform-origin: top left;
+  pointer-events: none;
+  transition:
+    opacity 180ms ease,
+    transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.portal-calendar-comment-anchor:hover .portal-calendar-comment-preview,
+.portal-calendar-comment-anchor:focus-within .portal-calendar-comment-preview {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.portal-calendar-comment-preview-label {
+  margin: 0 0 4px;
+  color: #b09770;
+  font-size: 0.52rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.portal-calendar-comment-preview-text {
+  margin: 0;
+  color: #61584d;
+  font-size: 0.69rem;
+  line-height: 1.5;
+}
+
+.portal-calendar-comment-text {
+  margin: 0;
+  color: #61584d;
+  font-size: 0.69rem;
+  line-height: 1.5;
+}
+
+.portal-calendar-comment-attachments,
+.portal-calendar-draft-attachments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.portal-calendar-comment-attachments {
+  margin-top: 8px;
+}
+
+.portal-calendar-comment-attachment,
+.portal-calendar-draft-attachment {
+  position: relative;
+  display: grid;
+  gap: 6px;
+  width: 92px;
+  text-decoration: none;
+}
+
+.portal-calendar-comment-attachment-image,
+.portal-calendar-draft-attachment-image {
+  width: 92px;
+  height: 72px;
+  border: 1px solid rgba(226, 216, 199, 0.92);
+  border-radius: 4px;
+  object-fit: cover;
+  background: rgba(250, 246, 238, 0.92);
+}
+
+.portal-calendar-comment-attachment-name {
+  color: #8f8475;
+  font-size: 0.58rem;
+  line-height: 1.35;
+  word-break: break-word;
+}
+
+.portal-calendar-draft-attachment-remove {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: 1px solid rgba(221, 212, 190, 0.92);
+  border-radius: 999px;
+  background: rgba(250, 246, 238, 0.94);
+  color: #7f705f;
+  cursor: pointer;
+}
+
+.portal-calendar-comment-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  padding: 0 12px 0 66px;
+  opacity: 0;
+  transform: translateY(-6px);
+  transition:
+    grid-template-rows 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    padding 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 200ms ease,
+    transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.portal-calendar-comment-panel.is-open {
+  grid-template-rows: 1fr;
+  padding: 0 12px 12px 35px;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.portal-calendar-comment-panel-inner {
+  display: grid;
+  gap: 10px;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.portal-calendar-comment-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.portal-calendar-comment-panel-title {
+  margin: 0;
+  color: #8f7350;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.portal-calendar-comment-panel-meta {
+  color: #9d8f7b;
+  font-size: 0.62rem;
+}
+
+.portal-calendar-comment-feed {
+  display: grid;
+  gap: 8px;
+}
+
+.portal-calendar-comment-entry {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid rgba(226, 216, 199, 0.92);
+  border-radius: 4px;
+  background: rgba(251, 247, 240, 0.82);
+}
+
+.portal-calendar-comment-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  color: #fff;
+  font-size: 0.56rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  flex-shrink: 0;
+}
+
+.portal-calendar-comment-avatar.is-sand {
+  background: #b79a6f;
+}
+
+.portal-calendar-comment-avatar.is-sage {
+  background: #6f9177;
+}
+
+.portal-calendar-comment-avatar.is-amber {
+  background: #ba7f44;
+}
+
+.portal-calendar-comment-avatar.is-violet {
+  background: #7f6bb8;
+}
+
+.portal-calendar-comment-avatar.is-ink {
+  background: #5f6677;
+}
+
+.portal-calendar-comment-body {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.portal-calendar-comment-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  color: #8c7f6b;
+  font-size: 0.62rem;
+}
+
+.portal-calendar-comment-meta strong {
+  color: #2b2721;
+  font-weight: 600;
+}
+
+.portal-calendar-comment-compose {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.portal-calendar-attachment-input {
+  display: none;
+}
+
+.portal-calendar-comment-attach {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  width: 36px;
+  padding: 0;
+  border: 1px solid rgba(176, 151, 112, 0.22);
+  border-radius: 4px;
+  background: rgba(250, 246, 238, 0.82);
+  color: #9a7850;
+  font: inherit;
+  cursor: pointer;
+  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease;
+}
+
+.portal-calendar-comment-attach:hover {
+  border-color: rgba(176, 151, 112, 0.36);
+  background: rgba(244, 236, 223, 0.9);
+  color: #7f5930;
+}
+
+.portal-calendar-comment-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 36px;
+  border: 1px solid rgba(220, 210, 194, 0.96);
+  border-radius: 4px;
+  background: rgba(255, 252, 247, 0.92);
+  padding: 0 12px;
+  color: #2d2a25;
+  font: inherit;
+  font-size: 0.72rem;
+}
+
+.portal-calendar-comment-input::placeholder {
+  color: #a3998b;
+}
+
+.portal-calendar-comment-input:focus {
+  outline: none;
+  border-color: rgba(176, 151, 112, 0.5);
+  box-shadow: 0 0 0 3px rgba(176, 151, 112, 0.12);
+}
+
+.portal-calendar-comment-submit {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  flex-shrink: 0;
+  padding: 0 12px;
+  border: 1px solid rgba(155, 118, 62, 0.32);
+  border-radius: 4px;
+  background: linear-gradient(180deg, rgba(210, 182, 136, 0.25), rgba(184, 145, 86, 0.18));
+  color: #7f5930;
+  font: inherit;
+  font-size: 0.68rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
+}
+
+.portal-calendar-comment-submit:hover {
+  transform: translateY(-1px);
+  border-color: rgba(155, 118, 62, 0.44);
+  background: linear-gradient(180deg, rgba(210, 182, 136, 0.34), rgba(184, 145, 86, 0.26));
+}
+
+@keyframes portal-comment-unread-pulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 1px rgba(107, 146, 116, 0.08),
+      0 0 0 4px rgba(127, 168, 136, 0.08);
+  }
+
+  50% {
+    box-shadow:
+      0 0 0 1px rgba(107, 146, 116, 0.14),
+      0 0 0 8px rgba(127, 168, 136, 0.12);
+  }
+}
+
+.portal-calendar-tag {
+  padding: 2px 7px;
+  border-radius: 2px;
+  background: #efe8dc;
+  color: #a5947e;
+  font-size: 0.5rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  justify-self: end;
+}
+
+.portal-calendar-tag.is-active {
+  background: rgba(185, 115, 90, 0.14);
+  color: #9f6447;
+}
+
+.portal-calendar-tag.is-upcoming {
+  background: rgba(184, 150, 90, 0.14);
+  color: #9d7f40;
+}
+
+.portal-calendar-tag.is-final {
+  background: rgba(126, 156, 132, 0.14);
+  color: #5f7f67;
+}
+
+.portal-calendar-assignee,
+.portal-activity-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: #b09770;
+  color: #fff;
+  font-size: 0.56rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.portal-calendar-assignee.is-sand {
+  background: #b79a6f;
+}
+
+.portal-calendar-assignee.is-sage {
+  background: #6f9177;
+}
+
+.portal-calendar-assignee.is-amber {
+  background: #ba7f44;
+}
+
+.portal-calendar-assignee.is-violet {
+  background: #7f6bb8;
+}
+
+.portal-calendar-month-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 20px 8px;
+  background: linear-gradient(180deg, #f8f3eb 0%, #fbf7f1 100%);
+  border-top: 1px solid rgba(237, 230, 216, 0.85);
+  border-bottom: 1px solid rgba(237, 230, 216, 0.75);
+  box-shadow: inset 0 1px 0 rgba(255, 252, 247, 0.45);
+}
+
+.portal-calendar-month-label {
+  margin: 0;
+  color: #1c1c14;
+  font-size: 0.98rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.portal-calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  background: #fbf8f3;
+  border-bottom: 1px solid #ece4d8;
+}
+
+.portal-calendar-weekday {
+  padding: 12px 6px;
+  text-align: center;
+  color: #8a7d6c;
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.portal-calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 1px;
+  background: #ece4d8;
+}
+
+.portal-calendar-date {
+  position: relative;
+  min-height: 114px;
+  border: 1px solid transparent;
+  background: #fff;
+  color: #171411;
+  padding: 22px 12px 12px;
+  text-align: left;
+  transform: translateY(0);
+  box-shadow: inset 0 0 0 rgba(176, 151, 112, 0);
+  transition:
+    border-color 180ms ease,
+    transform 200ms ease,
+    box-shadow 200ms ease;
+  overflow: hidden;
+}
+
+.portal-calendar-date::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, #fffaf3 0%, #f8efe3 100%);
+  opacity: 0;
+  transition: opacity 180ms ease;
+  pointer-events: none;
+}
+
+.portal-calendar-date:hover {
+  border-color: rgba(217, 196, 167, 0.72);
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 252, 246, 0.6),
+    0 10px 18px rgba(176, 151, 112, 0.12);
+}
+
+.portal-calendar-date:hover::before {
+  opacity: 1;
+}
+
+.portal-calendar-date.is-muted {
+  color: #c1b6a6;
+}
+
+.portal-calendar-date.is-selected {
+  border-color: #d9c4a7;
+  background: #f7f0e6;
+}
+
+.portal-calendar-date.is-today {
+  background: linear-gradient(180deg, #f2fbf4 0%, #e7f4ea 100%);
+  border-color: rgba(143, 186, 151, 0.42);
+}
+
+.portal-calendar-date-state-row {
+  position: absolute;
+  top: 7px;
+  left: 50%;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transform: translateX(-50%);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.portal-calendar-date-indicators {
+  position: absolute;
+  top: 7px;
+  right: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.portal-calendar-date-top {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.portal-calendar-date-indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background: rgba(182, 165, 142, 0.12);
+  color: #aa9472;
+}
+
+.portal-calendar-date-state {
+  color: #d4cab9;
+  font-size: 0.48rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.portal-calendar-date-state-top {
+  position: static;
+  transform: none;
+  text-align: center;
+}
+
+.portal-calendar-date-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  font-size: 0.8rem;
+  border-radius: 999px;
+  transition: background 180ms ease, color 180ms ease, box-shadow 180ms ease;
+}
+
+.portal-calendar-date:hover .portal-calendar-date-number {
+  background: rgba(182, 165, 142, 0.16);
+  color: #1c1c14;
+  box-shadow: inset 0 0 0 1px rgba(176, 151, 112, 0.2);
+}
+
+.portal-calendar-date.is-selected .portal-calendar-date-number {
+  background: #b6a58e;
+  color: #fff;
+}
+
+.portal-calendar-date.is-selected .portal-calendar-date-state {
+  color: #b9ab95;
+}
+
+.portal-calendar-date.is-selected .portal-calendar-date-indicator {
+  background: rgba(182, 165, 142, 0.18);
+  color: #8f7755;
+}
+
+.portal-calendar-date.is-today .portal-calendar-date-number {
+  background: rgba(126, 170, 135, 0.16);
+  color: #2f5e3b;
+}
+
+.portal-calendar-date.is-today .portal-calendar-date-state {
+  color: #a8c1ae;
+}
+
+.portal-calendar-date.is-today .portal-calendar-date-indicator {
+  background: rgba(126, 170, 135, 0.16);
+  color: #4d7a57;
+}
+
+.portal-calendar-date-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #b6a58e;
+  transition: transform 180ms ease, background 180ms ease, box-shadow 180ms ease;
+}
+
+.portal-calendar-date:hover .portal-calendar-date-dot {
+  background: #a88e66;
+  transform: scale(1.12);
+  box-shadow: 0 0 0 3px rgba(182, 165, 142, 0.12);
+}
+
+.portal-calendar-date-events {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 4px;
+  margin-top: 12px;
+}
+
+.portal-calendar-date-events p {
+  margin: 0;
+  overflow: hidden;
+  color: #5a5146;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.68rem;
+  transition: color 180ms ease;
+}
+
+.portal-calendar-date:hover .portal-calendar-date-events p {
+  color: #2d2a25;
+}
+
+.portal-calendar-date.is-today .portal-calendar-date-events p {
+  color: #44634d;
+}
+
+.portal-calendar-selected {
+  padding: 16px 20px 20px;
+  border-top: 1px solid #ece4d8;
+  background:
+    linear-gradient(180deg, rgba(251, 248, 242, 0.95), rgba(245, 241, 234, 0.92));
+}
+
+.portal-calendar-selected-list {
+  display: grid;
+  gap: 8px;
+}
+
+.portal-calendar-selected-date {
+  margin: 0;
+  color: #171411;
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.portal-calendar-selected-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: #5a5146;
+  font-size: 0.83rem;
+}
+
+.portal-calendar-selected-card {
+  display: grid;
+  gap: 8px;
+  padding: 10px 12px;
+  border: 1px solid rgba(237, 230, 216, 0.95);
+  background:
+    linear-gradient(180deg, rgba(248, 244, 237, 0.88), rgba(243, 238, 230, 0.82));
+}
+
+.portal-calendar-selected-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.portal-calendar-selected-meta span {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 7px;
+  border-radius: 2px;
+  background: rgba(232, 222, 208, 0.78);
+  color: #7f705f;
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.portal-calendar-selected-detail {
+  margin: 0;
+  color: #6a6257;
+  font-size: 0.74rem;
+  line-height: 1.5;
+}
+@media (max-width: 720px) {
+  .portal-calendar-upcoming-item {
+    display: block;
+  }
+}

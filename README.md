@@ -8,6 +8,7 @@ new repo root, install dependencies, add your environment variables, and run:
 - `npm install`
 - `npm run dev`
 
-Required environment variable:
+Required environment variables:
 
-- `VITE_CLERK_PUBLISHABLE_KEY`
+- `VITE_AUTH0_DOMAIN`
+- `VITE_AUTH0_CLIENT_ID`
