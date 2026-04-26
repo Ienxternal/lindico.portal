@@ -88,8 +88,9 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  padding: 8px;
   gap: 8px;
-  min-width: 148px;
+  min-width: 156px;
   height: 28px;
   border: 1px solid rgba(176, 151, 112, 0.24);
   border-radius: 3px;
@@ -432,11 +433,26 @@
   line-height: 1.1;
 }
 
-.portal-info-summary-text {
+.portal-info-summary-text, 
+.portal-activity-action {
   margin: 0;
   color: #6a6257;
   font-size: 0.72rem;
   line-height: 1.5;
+}
+
+.portal-activity-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 5px;
+}
+
+.portal-activity-line strong {
+  color: #1c1c14;
+  font-size: 0.87rem;
+  font-weight: 500;
+  line-height: 1.4;
 }
 
 .portal-info-grid {
@@ -543,8 +559,7 @@
 
 .portal-info-value,
 .portal-contact-name,
-.portal-resource-row p,
-.portal-activity-row p {
+.portal-resource-row p {
   margin: 0;
   color: #1c1c14;
   font-size: 0.87rem;
@@ -571,7 +586,7 @@
 .portal-info-sub,
 .portal-contact-role,
 .portal-resource-row span,
-.portal-activity-row span {
+.portal-activity-row > div > span {
   margin: 2px 0 0;
   color: #9e917d;
   font-size: 0.74rem;
@@ -779,14 +794,14 @@
 }
 
 .portal-contact-qr-image {
-  width: 70px;
-  height: 70px;
+  width: 90px;
+  height: 90px;
   object-fit: contain;
 }
 
 .portal-contact-qr-placeholder {
-  width: 70px;
-  height: 70px;
+  width: 90px;
+  height: 90px;
   border-radius: 3px;
   background:
     linear-gradient(135deg, rgba(176, 151, 112, 0.08), rgba(176, 151, 112, 0.18));
@@ -819,7 +834,7 @@
 
 .portal-contact-vcard-popover-label {
   color: #9a7d58;
-  font-size: 0.46rem;
+  font-size: 0.55rem;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -830,8 +845,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 76px;
-  height: 76px;
+  width: 96px;
+  height: 96px;
   border-radius: 4px;
   background: rgba(255, 251, 245, 0.96);
 }
@@ -1031,6 +1046,4 @@
     display: block;
   }
 }
-
-
 

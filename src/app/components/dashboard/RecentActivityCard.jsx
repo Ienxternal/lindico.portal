@@ -25,9 +25,10 @@ export function RecentActivityCard() {
               {initials}
             </span>
             <div>
-              <p>
-                <strong>{name}</strong> {action}
-              </p>
+              <div className="portal-activity-line">
+                <strong>{name}</strong>
+                <span className="portal-activity-action">{action}</span>
+              </div>
               <span>{time}</span>
             </div>
           </div>
@@ -39,5 +40,3 @@ export function RecentActivityCard() {
     </article>
   );
 }
-
-

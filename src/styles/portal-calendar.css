@@ -33,11 +33,22 @@
 
 .portal-calendar-upcoming {
   display: grid;
-  gap: 8px;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr);
+  gap: 18px;
   padding: 12px 20px;
   border-bottom: 1px solid #ede6d8;
   background:
     linear-gradient(180deg, rgba(249, 244, 237, 0.96), rgba(244, 237, 227, 0.92));
+}
+
+.portal-calendar-upcoming.is-expanded {
+  align-items: start;
+}
+
+.portal-calendar-schedule-panel {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
 }
 
 .portal-calendar-upcoming-label {
@@ -50,9 +61,10 @@
 .portal-calendar-upcoming-columns {
   display: grid;
   flex: 1;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   max-height: 164px;
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 0 6px;
   scrollbar-width: thin;
   scrollbar-color: rgba(176, 151, 112, 0.58) rgba(239, 232, 220, 0.72);
@@ -89,19 +101,13 @@
   gap: 0;
 }
 
-.portal-calendar-upcoming-list + .portal-calendar-upcoming-list {
-  border-left: 1px solid #e3d9c8;
-  padding-left: 20px;
-  margin-left: 20px;
-}
-
 .portal-calendar-upcoming-item {
   position: relative;
   display: block;
   width: 100%;
   margin: 0;
   border-bottom: 1px solid #ede6d8;
-  padding: 0 8px;
+  padding: 0;
   transition: background 180ms ease, box-shadow 180ms ease;
 }
 
@@ -135,12 +141,12 @@
 
 .portal-calendar-upcoming-select {
   display: grid;
-  grid-template-columns: auto 48px minmax(0, 1fr) auto auto;
+  grid-template-columns: auto 48px minmax(0, 1fr) auto;
   align-items: center;
   gap: 10px;
   min-height: 40px;
-  width: calc(100% + 16px);
-  margin: 0 -8px;
+  width: 100%;
+  margin: 0;
   padding: 0 8px;
   border-left: 0;
   border-right: 0;
@@ -189,18 +195,25 @@
 }
 
 .portal-calendar-event-dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 8px;
   height: 8px;
   border-radius: 999px;
 }
 
 .portal-calendar-event-dot.is-complete {
-  background: #9bb6a0;
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  background: rgba(111, 145, 119, 0.14);
+  color: #5b8f67;
 }
 
 .portal-calendar-event-dot.is-active {
-  background: #b77755;
-  box-shadow: 0 0 0 3px rgba(183, 119, 85, 0.16);
+  background: #6f9177;
+  box-shadow: 0 0 0 3px rgba(111, 145, 119, 0.16);
 }
 
 .portal-calendar-event-dot.is-upcoming {
@@ -245,6 +258,7 @@
   display: inline-flex;
   align-items: center;
   flex-shrink: 0;
+  gap: 8px;
 }
 
 .portal-calendar-comment-anchor.is-hovered {
@@ -263,7 +277,6 @@
   border-radius: 999px;
   background: linear-gradient(180deg, rgba(205, 179, 136, 0.22), rgba(185, 146, 90, 0.16));
   color: #9c7340;
-  cursor: pointer;
   transition:
     border-color 160ms ease,
     background 160ms ease,
@@ -296,7 +309,6 @@
 }
 
 .portal-calendar-comment-trigger:hover,
-.portal-calendar-comment-trigger:focus-visible,
 .portal-calendar-upcoming-item.is-thread-open .portal-calendar-comment-trigger {
   border-color: rgba(155, 118, 62, 0.4);
   background: linear-gradient(180deg, rgba(207, 172, 111, 0.34), rgba(187, 143, 76, 0.24));
@@ -305,8 +317,13 @@
   box-shadow: 0 6px 14px rgba(176, 151, 112, 0.16);
 }
 
+.portal-calendar-comment-trigger-image {
+  min-width: 21px;
+  padding: 0;
+  color: #aa9472;
+}
+
 .portal-calendar-comment-trigger.is-unread:hover,
-.portal-calendar-comment-trigger.is-unread:focus-visible,
 .portal-calendar-upcoming-item.is-thread-open .portal-calendar-comment-trigger.is-unread {
   border-color: rgba(91, 130, 101, 0.48);
   background: linear-gradient(180deg, rgba(170, 210, 178, 0.42), rgba(127, 168, 136, 0.3));
@@ -314,11 +331,6 @@
   box-shadow:
     0 0 0 1px rgba(107, 146, 116, 0.12),
     0 8px 18px rgba(111, 145, 119, 0.18);
-}
-
-.portal-calendar-comment-trigger:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(176, 151, 112, 0.14);
 }
 
 .portal-calendar-comment-count {
@@ -433,7 +445,8 @@
 .portal-calendar-comment-panel {
   display: grid;
   grid-template-rows: 0fr;
-  padding: 0 12px 0 66px;
+  width: 100%;
+  padding: 0 8px 0 18px;
   opacity: 0;
   transform: translateY(-6px);
   transition:
@@ -445,7 +458,7 @@
 
 .portal-calendar-comment-panel.is-open {
   grid-template-rows: 1fr;
-  padding: 0 12px 12px 35px;
+  padding: 4px 8px 12px 18px;
   opacity: 1;
   transform: translateY(0);
 }
@@ -454,7 +467,7 @@
   display: grid;
   gap: 10px;
   min-height: 0;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .portal-calendar-comment-panel-head {
@@ -653,8 +666,8 @@
 }
 
 .portal-calendar-tag.is-active {
-  background: rgba(185, 115, 90, 0.14);
-  color: #9f6447;
+  background: rgba(111, 145, 119, 0.14);
+  color: #5f7f67;
 }
 
 .portal-calendar-tag.is-upcoming {
@@ -696,6 +709,185 @@
 
 .portal-calendar-assignee.is-violet {
   background: #7f6bb8;
+}
+
+.portal-calendar-event-detail {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  min-width: 0;
+  max-width: 100%;
+  padding: 12px 0 12px 18px;
+  border-left: 1px solid #e3d9c8;
+  justify-self: stretch;
+}
+
+.portal-calendar-upcoming:not(.is-expanded) .portal-calendar-event-detail {
+  max-height: 164px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(176, 151, 112, 0.58) rgba(239, 232, 220, 0.72);
+}
+
+.portal-calendar-upcoming:not(.is-expanded) .portal-calendar-event-detail::-webkit-scrollbar {
+  width: 10px;
+}
+
+.portal-calendar-upcoming:not(.is-expanded) .portal-calendar-event-detail::-webkit-scrollbar-track {
+  border-radius: 999px;
+  background: rgba(239, 232, 220, 0.72);
+}
+
+.portal-calendar-upcoming:not(.is-expanded) .portal-calendar-event-detail::-webkit-scrollbar-thumb {
+  border: 2px solid rgba(239, 232, 220, 0.72);
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(194, 167, 126, 0.95), rgba(176, 151, 112, 0.8));
+}
+
+.portal-calendar-upcoming:not(.is-expanded) .portal-calendar-event-detail::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, rgba(186, 157, 112, 0.98), rgba(164, 138, 98, 0.88));
+}
+
+.portal-calendar-upcoming.is-expanded .portal-calendar-event-detail {
+  max-height: none;
+  overflow: visible;
+}
+
+.portal-calendar-event-detail-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.portal-calendar-event-detail-kicker {
+  margin: 0 0 4px;
+  color: #b09770;
+  font-size: 0.56rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.portal-calendar-event-detail-title {
+  margin: 0;
+  color: #1c1c14;
+  font-size: 0.84rem;
+  font-weight: 650;
+  line-height: 1.25;
+}
+
+.portal-calendar-event-detail-copy {
+  margin: 0;
+  color: #61584d;
+  font-size: 0.69rem;
+  line-height: 1.45;
+}
+
+.portal-calendar-event-detail-tags {
+  justify-content: flex-start;
+}
+
+.portal-calendar-event-detail-section {
+  display: grid;
+  gap: 10px;
+  border-top: 1px solid rgba(237, 230, 216, 0.9);
+  padding-top: 10px;
+}
+
+.portal-calendar-event-summary {
+  display: grid;
+  gap: 10px;
+}
+
+.portal-calendar-event-summary-copy {
+  margin: 0;
+  color: #61584d;
+  font-size: 0.72rem;
+  line-height: 1.5;
+}
+
+.portal-calendar-event-attendees {
+  display: grid;
+  gap: 10px;
+}
+
+.portal-calendar-event-day-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.portal-calendar-event-day-grid div {
+  display: grid;
+  gap: 3px;
+  border: 1px solid rgba(226, 216, 199, 0.92);
+  background: rgba(251, 247, 240, 0.72);
+  padding: 10px 12px;
+}
+
+.portal-calendar-event-day-grid span {
+  color: #b09770;
+  font-size: 0.5rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.portal-calendar-event-day-grid strong {
+  color: #2b2721;
+  font-size: 0.66rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.portal-calendar-event-attendees-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.portal-calendar-event-attendees-label {
+  margin: 0;
+  color: #8f7350;
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.portal-calendar-event-attendees-list {
+  display: grid;
+  gap: 8px;
+}
+
+.portal-calendar-event-attendee {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid rgba(226, 216, 199, 0.92);
+  background: rgba(251, 247, 240, 0.82);
+}
+
+.portal-calendar-event-attendee div {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.portal-calendar-event-attendee strong {
+  color: #2b2721;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.portal-calendar-event-attendee span {
+  color: #8f8475;
+  font-size: 0.64rem;
+  line-height: 1.35;
 }
 
 .portal-calendar-month-row {
@@ -995,6 +1187,20 @@
   line-height: 1.5;
 }
 @media (max-width: 720px) {
+  .portal-calendar-upcoming {
+    grid-template-columns: 1fr;
+  }
+
+  .portal-calendar-event-detail {
+    padding: 12px 0 0;
+    border-left: 0;
+    border-top: 1px solid #e3d9c8;
+  }
+
+  .portal-calendar-event-day-grid {
+    grid-template-columns: 1fr;
+  }
+
   .portal-calendar-upcoming-item {
     display: block;
   }
