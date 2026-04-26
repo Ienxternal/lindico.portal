@@ -67,7 +67,7 @@ export function ContactSaveControl({
         {label ? <span className="portal-contact-vcard-button-label">{label}</span> : null}
       </button>
       <div className="portal-contact-vcard-popover" aria-hidden="true">
-        <span className="portal-contact-vcard-popover-label">Save Contact</span>
+        <span className="portal-contact-vcard-popover-label">Scan or Click</span>
         <span className="portal-contact-vcard-popover-frame">
           {contactQrCode ? (
             <img src={contactQrCode} alt="" className="portal-contact-qr-image" />

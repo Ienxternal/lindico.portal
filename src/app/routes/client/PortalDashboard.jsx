@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { CircleAlert } from "lucide-react";
 import { ProjectCalendar } from '../../components/dashboard/ProjectCalendar';
 import { ProjectOverviewCard } from '../../components/dashboard/ProjectOverviewCard';
 import { ProjectSummaryCard } from '../../components/dashboard/ProjectSummaryCard';
@@ -33,25 +34,34 @@ export function PortalDashboard() {
           <div className="portal-page-action-menu" ref={actionsRef}>
             <button
               type="button"
-              className={`portal-page-header-todo${isActionsOpen ? ' is-open' : ''}`}
+              className={`portal-page-header-todo${isActionsOpen ? " is-open" : ""}`}
               aria-expanded={isActionsOpen}
               onClick={() => setIsActionsOpen((value) => !value)}
             >
-              <span>Client Actions</span>
+              <span>
+                <CircleAlert size={16} color="#decc68" />
+              </span>
+              <span>Client Actions Required</span>
               <span className="portal-page-header-action-count">
                 {requiredActions.length}
                 <span className="portal-page-header-pending-dot" />
               </span>
             </button>
 
-            <div className={`portal-page-action-popover${isActionsOpen ? ' is-open' : ''}`}>
+            <div
+              className={`portal-page-action-popover${isActionsOpen ? " is-open" : ""}`}
+            >
               <div className="portal-page-action-popover-head">
                 <p>Required Actions</p>
                 <span>{requiredActions.length} open</span>
               </div>
               <div className="portal-page-action-list">
                 {requiredActions.slice(0, 4).map(([type, title]) => (
-                  <button key={title} type="button" className="portal-page-action-item">
+                  <button
+                    key={title}
+                    type="button"
+                    className="portal-page-action-item"
+                  >
                     <span className="portal-page-action-type">{type}</span>
                     <span className="portal-page-action-title">{title}</span>
                   </button>
@@ -84,3 +94,5 @@ export function PortalDashboard() {
     </section>
   );
 }
+
+
