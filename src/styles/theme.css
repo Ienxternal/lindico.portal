@@ -5,4 +5,11 @@
   --portal-text: #1d1a17;
   --portal-muted: rgba(29, 26, 23, 0.68);
   --portal-accent: #b59773;
+  --portal-warm-border: rgba(176, 151, 112, 0.28);
+  --portal-warm-border-strong: rgba(176, 151, 112, 0.42);
+  --portal-warm-surface: rgba(250, 246, 238, 0.7);
+  --portal-warm-surface-accent: rgba(244, 236, 223, 0.68);
+  --portal-warm-surface-hover: rgba(240, 228, 210, 0.92);
+  --portal-warm-text-soft: #9a7850;
+  --portal-warm-text-strong: #7f5930;
 }

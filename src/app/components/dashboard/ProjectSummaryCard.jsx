@@ -1,13 +1,12 @@
 import { CalendarDays, MapPinHouse, MessageSquareMore, Share2 } from 'lucide-react';
-import { projectManagerContact, projectSummaryDetails } from '../../data/portalDashboardData';
 import { ContactSaveControl } from './ContactSaveControl';
 
-export function ProjectSummaryCard() {
+export function ProjectSummaryCard({ project, projectManagerContact, projectSummaryDetails }) {
   async function handleShareProject() {
-    const shareUrl = `${window.location.origin}/portal/project/lakeview-residence-renovation`;
+    const shareUrl = `${window.location.origin}/portal?project=${project.id}`;
     const shareData = {
-      title: 'Lakeview Residence Renovation',
-      text: 'Project portal access for Lakeview Residence Renovation',
+      title: project.name,
+      text: `Project portal access for ${project.name}`,
       url: shareUrl,
     };
 
@@ -90,18 +89,11 @@ export function ProjectSummaryCard() {
         <div className="portal-contact-card">
           <div className="portal-contact-hero">
             <div className="portal-contact-hero-main">
-              <div className="portal-contact-avatar">AN</div>
+              <div className="portal-contact-avatar">{projectManagerContact.displayInitials}</div>
               <div className="portal-contact-identity">
-                <p className="portal-contact-name">Alex Nguyen, PMP</p>
+                <p className="portal-contact-name">{projectManagerContact.displayName}</p>
                 <div className="portal-contact-role-row">
-                  <p className="portal-contact-role">Project Director - LindiCo.</p>
-                  {/* <ContactSaveControl
-                    className="is-role"
-                    label="Save Contact"
-                    filename={projectManagerContact.filename}
-                    mecard={projectManagerContact.mecard}
-                    vcard={projectManagerContact.vcard}
-                  /> */}
+                  <p className="portal-contact-role">{projectManagerContact.displayRole}</p>
                 </div>
               </div>
             </div>
@@ -120,9 +112,13 @@ export function ProjectSummaryCard() {
                   <span className="portal-contact-inline-icon" aria-hidden="true">
                     <MapPinHouse size={13} strokeWidth={1.8} />
                   </span>
-                  <span className="portal-contact-onsite-date">Tue, Apr 28</span>
+                  <span className="portal-contact-onsite-date">
+                    {projectManagerContact.nextOnSiteDate}
+                  </span>
                 </div>
-                <p className="portal-contact-onsite-title">10:30 AM walkthrough</p>
+                <p className="portal-contact-onsite-title">
+                  {projectManagerContact.nextOnSiteTitle}
+                </p>
               </div>
             </div>
           </div>
@@ -133,7 +129,7 @@ export function ProjectSummaryCard() {
             </button>
             <button type="button" className="portal-contact-action-button is-secondary">
               <MessageSquareMore size={18} strokeWidth={1.8} />
-              <span>Request Update</span>
+              <span>Send Message</span>
             </button>
             <div className="portal-contact-actions-save">
               <ContactSaveControl

@@ -1,4 +1,4 @@
-export function FileListWidget() {
+export function FileListWidget({ clientEssentials }) {
   return (
     <article className="portal-card">
       <div className="portal-card-head">
@@ -12,19 +12,15 @@ export function FileListWidget() {
         <div>
           <h3>Upcoming decisions</h3>
           <ul>
-            <li>Confirm dining fixture finish</li>
-            <li>Approve primary bath mirror package</li>
-            <li>Review outdoor heater placement</li>
+            {clientEssentials.decisions.map((decision) => (
+              <li key={decision}>{decision}</li>
+            ))}
           </ul>
         </div>
         <div id="documents">
           <h3>Latest documents</h3>
           <ul className="portal-doc-list">
-            {[
-              { name: 'Lighting submittal package', type: 'PDF' },
-              { name: 'Updated project schedule', type: 'PDF' },
-              { name: 'Cabinet hardware sample sheet', type: 'XLSX' },
-            ].map(({ name, type }) => (
+            {clientEssentials.documents.map(({ name, type }) => (
               <li key={name} className="portal-doc-item">
                 <span className={`portal-doc-badge portal-doc-badge--${type.toLowerCase()}`}>{type}</span>
                 {name}
@@ -35,9 +31,9 @@ export function FileListWidget() {
         <div id="contacts">
           <h3>Key contacts</h3>
           <ul>
-            <li>Sarah Collins, Project Lead</li>
-            <li>Marcus Hale, Site Superintendent</li>
-            <li>LindiCo Studio, Client Support</li>
+            {clientEssentials.contacts.map((contact) => (
+              <li key={contact}>{contact}</li>
+            ))}
           </ul>
         </div>
       </div>

@@ -1,11 +1,4 @@
-const activities = [
-  ['AN', '#9cb6e9', 'Alex Nguyen', 'updated the project portal', '2h ago'],
-  ['SC', '#b09770', 'Alex Nguyen', 'uploaded Marble Specifications v2.pdf', '2h ago'],
-  ['JR', '#4a7a5a', 'James Reid', 'marked Electrical Inspection as complete', 'Yesterday'],
-  ['EH', '#6d52b8', 'E. Harrison', 'commented on the project timeline', 'Yesterday'],
-];
-
-export function RecentActivityCard() {
+export function RecentActivityCard({ activities }) {
   return (
     <article className="portal-card portal-recent-card">
       <div className="portal-card-head">

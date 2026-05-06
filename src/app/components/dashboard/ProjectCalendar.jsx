@@ -22,11 +22,15 @@ import {
   Send,
   X,
 } from 'lucide-react';
-import { calendarEvents } from '../../data/portalCalendarData';
 
-const initialUnreadCommentIds = new Set(
-  calendarEvents.filter((event) => event.comments?.length).map((event) => event.id),
-);
+function getInitialScheduleEvent(events) {
+  return (
+    events.find((event) => event.status === 'active') ??
+    events.find((event) => event.status === 'upcoming') ??
+    events[0] ??
+    null
+  );
+}
 
 function getAssigneeTone(assignee) {
   switch (assignee) {
@@ -60,18 +64,25 @@ function getCommentTone(author) {
   }
 }
 
-export function ProjectCalendar() {
-  const scheduleRef = useRef(null);
+export function ProjectCalendar({ events }) {
   const attachmentInputRefs = useRef({});
-  const [currentMonth, setCurrentMonth] = useState(new Date(2026, 3, 1));
-  const [selectedDate, setSelectedDate] = useState(parseISO('2026-04-22T11:00:00'));
-  const [selectedEventId, setSelectedEventId] = useState(4);
-  const [expandedCommentId, setExpandedCommentId] = useState(null);
+  const initialScheduleEvent = useMemo(() => getInitialScheduleEvent(events), [events]);
+  const [currentMonth, setCurrentMonth] = useState(() =>
+    initialScheduleEvent
+      ? new Date(parseISO(initialScheduleEvent.datetime).getFullYear(), parseISO(initialScheduleEvent.datetime).getMonth(), 1)
+      : new Date(),
+  );
+  const [selectedDate, setSelectedDate] = useState(() =>
+    initialScheduleEvent ? parseISO(initialScheduleEvent.datetime) : new Date(),
+  );
+  const [selectedEventId, setSelectedEventId] = useState(() => initialScheduleEvent?.id ?? null);
   const [hoveredCommentId, setHoveredCommentId] = useState(null);
-  const [unreadCommentIds, setUnreadCommentIds] = useState(initialUnreadCommentIds);
+  const [unreadCommentIds, setUnreadCommentIds] = useState(
+    () => new Set(events.filter((event) => event.comments?.length).map((event) => event.id)),
+  );
   const [commentThreads, setCommentThreads] = useState(() =>
     Object.fromEntries(
-      calendarEvents
+      events
         .filter((event) => event.comments?.length)
         .map((event) => [event.id, event.comments]),
     ),
@@ -86,31 +97,39 @@ export function ProjectCalendar() {
     return eachDayOfInterval({ start, end });
   }, [currentMonth]);
 
-  const selectedEvents = calendarEvents.filter((event) =>
-    isSameDay(parseISO(event.datetime), selectedDate),
-  );
-  const upcomingEvents = [...calendarEvents].sort(
+  const upcomingEvents = [...events].sort(
     (a, b) => parseISO(a.datetime) - parseISO(b.datetime),
   );
   const selectedScheduleEvent =
-    calendarEvents.find((event) => event.id === selectedEventId) ?? selectedEvents[0] ?? null;
-  const isScheduleExpanded = expandedCommentId !== null;
+    events.find((event) => event.id === selectedEventId) ?? null;
   const selectedEventAttendees = selectedScheduleEvent?.attendees ?? [];
 
   useEffect(() => {
-    function handlePointerDown(event) {
-      if (!scheduleRef.current?.contains(event.target)) {
-        setExpandedCommentId(null);
-        setHoveredCommentId(null);
-      }
-    }
+    const nextInitialEvent = getInitialScheduleEvent(events);
 
-    document.addEventListener('pointerdown', handlePointerDown);
-
-    return () => {
-      document.removeEventListener('pointerdown', handlePointerDown);
-    };
-  }, [selectedEventId]);
+    setCurrentMonth(
+      nextInitialEvent
+        ? new Date(
+            parseISO(nextInitialEvent.datetime).getFullYear(),
+            parseISO(nextInitialEvent.datetime).getMonth(),
+            1,
+          )
+        : new Date(),
+    );
+    setSelectedDate(nextInitialEvent ? parseISO(nextInitialEvent.datetime) : new Date());
+    setSelectedEventId(nextInitialEvent?.id ?? null);
+    setHoveredCommentId(null);
+    setUnreadCommentIds(new Set(events.filter((event) => event.comments?.length).map((event) => event.id)));
+    setCommentThreads(
+      Object.fromEntries(
+        events
+          .filter((event) => event.comments?.length)
+          .map((event) => [event.id, event.comments]),
+      ),
+    );
+    setCommentDrafts({});
+    setAttachmentDrafts({});
+  }, [events]);
 
   useEffect(() => {
     return () => {
@@ -126,9 +145,7 @@ export function ProjectCalendar() {
 
   function handleUpcomingSelect(eventId, datetime) {
     const nextDate = parseISO(datetime);
-    const isSameExpandedEvent = expandedCommentId === eventId;
     setSelectedEventId(eventId);
-    setExpandedCommentId(isSameExpandedEvent ? null : eventId);
     setSelectedDate(nextDate);
     setCurrentMonth(new Date(nextDate.getFullYear(), nextDate.getMonth(), 1));
     setHoveredCommentId(null);
@@ -181,7 +198,6 @@ export function ProjectCalendar() {
       ...currentDrafts,
       [eventId]: [],
     }));
-    setExpandedCommentId(eventId);
     setUnreadCommentIds((currentIds) => {
       const nextIds = new Set(currentIds);
       nextIds.delete(eventId);
@@ -226,7 +242,7 @@ export function ProjectCalendar() {
   }
 
   return (
-    <article ref={scheduleRef} className="portal-card portal-calendar-card">
+    <article className="portal-card portal-calendar-card">
       <div className="portal-card-head">
         <div>
           <p className="portal-card-kicker">Timeline Overview</p>
@@ -234,14 +250,10 @@ export function ProjectCalendar() {
         </div>
       </div>
 
-      <div className={`portal-calendar-upcoming${isScheduleExpanded ? ' is-expanded' : ''}`}>
+      <div className="portal-calendar-upcoming">
         <div className="portal-calendar-schedule-panel">
           <div className="portal-calendar-upcoming-label">Schedule</div>
-          <div
-            className={`portal-calendar-upcoming-columns${
-              isScheduleExpanded ? ' is-expanded' : ''
-            }`}
-          >
+          <div className="portal-calendar-upcoming-columns">
             <div className="portal-calendar-upcoming-list">
               {upcomingEvents.map((event) => {
                 const isSelectedEvent = selectedScheduleEvent?.id === event.id;
@@ -255,7 +267,7 @@ export function ProjectCalendar() {
                     data-event-id={event.id}
                     className={`portal-calendar-upcoming-item${
                       isSelectedEvent ? ' is-selected' : ''
-                    }${expandedCommentId === event.id ? ' is-thread-open' : ''}${
+                    }${selectedEventId === event.id ? ' is-thread-open' : ''}${
                       isToday(parseISO(event.datetime)) ? ' is-today' : ''
                     }`}
                   >
@@ -335,7 +347,7 @@ export function ProjectCalendar() {
                     </button>
                     <div
                       className={`portal-calendar-comment-panel${
-                        expandedCommentId === event.id ? ' is-open' : ''
+                        selectedEventId === event.id ? ' is-open' : ''
                       }`}
                     >
                       <div className="portal-calendar-comment-panel-inner">
@@ -596,7 +608,7 @@ export function ProjectCalendar() {
 
       <div className="portal-calendar-grid">
         {monthDays.map((day) => {
-          const dayEvents = calendarEvents.filter((event) =>
+          const dayEvents = events.filter((event) =>
             isSameDay(parseISO(event.datetime), day),
           );
           const dayThreads = dayEvents.map((event) => commentThreads[event.id] ?? []);
@@ -635,22 +647,22 @@ export function ProjectCalendar() {
                   </span>
                 ) : null}
               </div>
-              <div className="portal-calendar-date-indicators">
-                {hasCommentActivity ? (
-                  <span className="portal-calendar-date-indicator" aria-label="Comments available">
-                    <MessageSquareMore size={10} />
-                  </span>
-                ) : null}
-                {hasImageActivity ? (
-                  <span className="portal-calendar-date-indicator" aria-label="Photos available">
-                    <Image size={10} />
-                  </span>
-                ) : null}
-              </div>
               <div className="portal-calendar-date-top">
                 <time dateTime={format(day, 'yyyy-MM-dd')} className="portal-calendar-date-number">
                   {format(day, 'd')}
                 </time>
+                <span className="portal-calendar-date-indicators">
+                  {hasCommentActivity ? (
+                    <span className="portal-calendar-date-indicator" aria-label="Comments available">
+                      <MessageSquareMore size={12} />
+                    </span>
+                  ) : null}
+                  {hasImageActivity ? (
+                    <span className="portal-calendar-date-indicator" aria-label="Photos available">
+                      <Image size={12} />
+                    </span>
+                  ) : null}
+                </span>
                 {dayEvents.length > 0 ? (
                   <span className="portal-calendar-date-dot" />
                 ) : null}
@@ -666,31 +678,6 @@ export function ProjectCalendar() {
             </button>
           );
         })}
-      </div>
-
-      <div className="portal-calendar-selected">
-        <p className="portal-card-kicker">Selected Date</p>
-        <div className="portal-calendar-selected-list">
-          <p className="portal-calendar-selected-date">{format(selectedDate, 'MMMM d, yyyy')}</p>
-          {selectedEvents.length > 0 ? (
-            selectedEvents.map((event) => (
-              <div key={event.id} className="portal-calendar-selected-card">
-                <div className="portal-calendar-selected-item">
-                  <span>{event.name}</span>
-                  <span>{event.time}</span>
-                </div>
-                <div className="portal-calendar-selected-meta">
-                  <span>{event.type}</span>
-                  <span>{event.location}</span>
-                  <span>Lead {event.assignee}</span>
-                </div>
-                <p className="portal-calendar-selected-detail">{event.detail}</p>
-              </div>
-            ))
-          ) : (
-            <p className="portal-calendar-empty">No scheduled events for this date.</p>
-          )}
-        </div>
       </div>
     </article>
   );

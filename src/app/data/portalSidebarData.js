@@ -26,8 +26,8 @@ export const portalProjects = [
     progress: '18% Complete',
   },
   {
-    id: 'cedar-terrace-outdoor-living',
-    name: 'Cedar Terrace Outdoor Living',
+    id: 'cedar-terrace-exterior-deck',
+    name: 'Cedar Terrace Exterior Deck',
     ref: '7721.0',
     location: 'Cedar Terrace, IL',
     status: 'Finishing',
