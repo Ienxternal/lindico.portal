@@ -1,15 +1,26 @@
 import { useEffect, useRef, useState } from 'react';
+import { useSearchParams } from 'react-router';
 import { CircleAlert } from "lucide-react";
 import { ProjectCalendar } from '../../components/dashboard/ProjectCalendar';
 import { ProjectOverviewCard } from '../../components/dashboard/ProjectOverviewCard';
 import { ProjectSummaryCard } from '../../components/dashboard/ProjectSummaryCard';
 import { RecentActivityCard } from '../../components/dashboard/RecentActivityCard';
 import { FileListWidget } from '../../components/dashboard/FileListWidget';
-import { requiredActions } from '../../data/portalDashboardData';
+import { defaultPortalProjectId, getPortalDashboardData } from '../../data/portalDashboardData';
+import { getProjectCalendarEvents } from '../../data/portalCalendarData';
+import { portalProjects } from '../../data/portalSidebarData';
 
 export function PortalDashboard() {
   const actionsRef = useRef(null);
   const [isActionsOpen, setIsActionsOpen] = useState(false);
+  const [searchParams] = useSearchParams();
+  const selectedProjectId = searchParams.get('project') ?? defaultPortalProjectId;
+  const currentProject =
+    portalProjects.find((project) => project.id === selectedProjectId) ?? portalProjects[0];
+  const dashboardData = getPortalDashboardData(currentProject.id);
+  const calendarEvents = getProjectCalendarEvents(currentProject.id);
+  const { clientEssentials, overview, projectManagerContact, projectSummaryDetails, recentActivity, requiredActions } =
+    dashboardData;
 
   useEffect(() => {
     function handlePointerDown(event) {
@@ -26,8 +37,8 @@ export function PortalDashboard() {
     <section className="portal-page-shell">
       <header className="portal-page-header">
         <div>
-          <p className="portal-page-eyebrow">Dashboard - April 2026</p>
-          <h1 className="portal-page-title">Welcome back, Tira!</h1>
+          <p className="portal-page-eyebrow">{dashboardData.dashboardEyebrow}</p>
+          <h1 className="portal-page-title">{dashboardData.dashboardTitle}</h1>
         </div>
 
         <div className="portal-page-header-meta">
@@ -78,21 +89,24 @@ export function PortalDashboard() {
       </header>
 
       <div className="portal-stack">
-        <ProjectSummaryCard />
+        <ProjectSummaryCard
+          project={currentProject}
+          projectManagerContact={projectManagerContact}
+          projectSummaryDetails={projectSummaryDetails}
+        />
 
         <div className="portal-dashboard-feature-row">
-          <ProjectOverviewCard />
-          <RecentActivityCard />
+          <ProjectOverviewCard overview={overview} />
+          <RecentActivityCard activities={recentActivity} />
         </div>
 
         <div id="schedule" className="portal-calendar-section">
-          <ProjectCalendar />
+          <ProjectCalendar events={calendarEvents} />
         </div>
 
-        <FileListWidget />
+        <FileListWidget clientEssentials={clientEssentials} />
       </div>
     </section>
   );
 }
-
 

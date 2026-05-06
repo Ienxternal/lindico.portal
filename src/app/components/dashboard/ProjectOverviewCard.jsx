@@ -1,11 +1,4 @@
-const progressTracks = [
-  ['Planning & Design', 100, true, false],
-  ['Procurement', 92, true, false],
-  ['On-Site Work', 68, false, true],
-  ['Final Styling', 24, false, false],
-];
-
-export function ProjectOverviewCard() {
+export function ProjectOverviewCard({ overview }) {
   return (
     <article className="portal-card portal-overview-card">
       <div className="portal-card-head">
@@ -17,15 +10,15 @@ export function ProjectOverviewCard() {
 
       <div className="portal-overview-body">
         <div className="portal-overview-hero">
-          <div className="portal-overview-percent">62%</div>
+          <div className="portal-overview-percent">{overview.percent}%</div>
           <div className="portal-overview-meta">
-            <p className="portal-overview-label">Overall Complete</p>
-            <p className="portal-overview-sub">Target completion by June 2026</p>
+            <p className="portal-overview-label">{overview.label}</p>
+            <p className="portal-overview-sub">{overview.sub}</p>
           </div>
         </div>
 
         <div className="portal-progress-list">
-          {progressTracks.map(([label, percent, done, active]) => (
+          {overview.progressTracks.map(([label, percent, done, active]) => (
             <div key={label} className="portal-progress-row">
               <div className="portal-progress-head">
                 <span className="portal-progress-name">

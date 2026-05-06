@@ -2,17 +2,9 @@
   box-sizing: border-box;
 }
 
-body {
-  margin: 0;
-  min-height: 100vh;
-  color: var(--portal-text);
-  background:
-    radial-gradient(circle at top, rgba(176, 151, 112, 0.12), transparent 30%),
-    linear-gradient(180deg, #efe6d6 0%, #e8decb 100%);
-  font-family: var(--font-sans);
-}
-
+body,
 .portal-host {
+  margin: 0;
   min-height: 100vh;
   color: var(--portal-text);
   background:
@@ -242,29 +234,6 @@ body {
 .portal-doc-badge--xlsx {
   background: rgba(90, 143, 104, 0.12);
   color: #3e7a50;
-}
-
-.portal-resource-row,
-.portal-activity-row {
-  align-items: center;
-  justify-content: space-between;
-}
-
-.portal-activity-row {
-  align-items: flex-start;
-  gap: 14px;
-}
-
-.portal-activity-row > div {
-  flex: 1;
-}
-
-.portal-activity-row p {
-  font-weight: 400;
-}
-
-.portal-activity-row strong {
-  font-weight: 700;
 }
 
 @media (max-width: 720px) {

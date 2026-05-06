@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { NavLink, useLocation, useNavigate } from 'react-router';
+import { defaultPortalProjectId } from '../../data/portalDashboardData';
 import { portalProjects, supportNav, workspaceNav } from '../../data/portalSidebarData';
 
 export function PortalSidebar() {
@@ -10,10 +11,15 @@ export function PortalSidebar() {
   const [isOpen, setIsOpen] = useState(false);
 
   const currentProject = useMemo(() => {
-    const match = location.pathname.match(/^\/portal\/project\/([^/]+)/);
-    const projectId = match?.[1];
+    const searchParams = new URLSearchParams(location.search);
+    const dashboardProjectId = searchParams.get('project');
+    const routeMatch = location.pathname.match(/^\/portal\/project\/([^/]+)/);
+    const projectId =
+      location.pathname === '/portal'
+        ? dashboardProjectId ?? defaultPortalProjectId
+        : routeMatch?.[1];
     return portalProjects.find((project) => project.id === projectId) ?? portalProjects[0];
-  }, [location.pathname]);
+  }, [location.pathname, location.search]);
 
   useEffect(() => {
     function handlePointerDown(event) {
@@ -28,6 +34,12 @@ export function PortalSidebar() {
 
   function handleProjectSelect(projectId) {
     setIsOpen(false);
+
+    if (location.pathname === '/portal') {
+      navigate(`/portal?project=${projectId}`);
+      return;
+    }
+
     navigate(`/portal/project/${projectId}`);
   }
 
@@ -97,14 +109,30 @@ export function PortalSidebar() {
 
       <nav className="portal-sidebar-nav">
         <p className="portal-sidebar-label portal-sidebar-label-workspace">Workspace</p>
-        {workspaceNav.map(({ label, to, href, icon: Icon, badge }) =>
-          to ? (
+        {workspaceNav.map(({ label, to, href, icon: Icon, badge }) => {
+          const resolvedTo =
+            label === 'Dashboard'
+              ? `/portal?project=${currentProject.id}`
+              : label === 'Project'
+                ? `/portal/project/${currentProject.id}`
+                : to;
+          const isDashboardLink = label === 'Dashboard';
+
+          return resolvedTo ? (
             <NavLink
               key={label}
-              to={to}
-              end={to === '/portal'}
+              to={resolvedTo}
+              end={isDashboardLink}
               className={({ isActive }) =>
-                `portal-sidebar-link${isActive ? ' is-active' : ''}`
+                `portal-sidebar-link${
+                  isDashboardLink
+                    ? location.pathname === '/portal'
+                      ? ' is-active'
+                      : ''
+                    : isActive
+                      ? ' is-active'
+                      : ''
+                }`
               }
             >
               <Icon size={15} strokeWidth={1.6} className="portal-sidebar-link-icon" />
@@ -116,8 +144,8 @@ export function PortalSidebar() {
               <Icon size={15} strokeWidth={1.6} className="portal-sidebar-link-icon" />
               <span>{label}</span>
             </a>
-          ),
-        )}
+          );
+        })}
       </nav>
 
       <nav className="portal-sidebar-nav">
